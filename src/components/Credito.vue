@@ -26,7 +26,7 @@
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="headline">{{ 'Proposta de Crédito' }}</span>
+                    <span class="headline">{{ 'Proposta de Crédito ' }}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -43,12 +43,17 @@
                                 </v-row>
                                 <v-row>
                                     <v-list-item-content>
+                                        <v-text-field v-model="credito.cliente.nome" label="Nome" disabled/>
+                                    </v-list-item-content>
+                                </v-row>
+                                <v-row>
+                                    <v-list-item-content>
                                         <v-text-field v-model="credito.limiteMaximo" label="Limite Máximo" disabled/>
                                     </v-list-item-content>
                                 </v-row>
                                 <v-row>
                                     <v-list-item-content>
-                                        <v-text-field v-model="credito.limiteMinimo" label="Limite Mínimo" disabled/>
+                                        <v-text-field v-model="credito.limiteMinimo" label="Limite Minimo" disabled/>
                                     </v-list-item-content>
                                 </v-row>
                                 <v-row>
@@ -84,7 +89,9 @@
                     cpf: null
                 },
                 credito: {
-                    cliente: null,
+                    cliente: {
+                        nome: null,
+                    },
                     aprovado: null,
                     limiteMinimo: null,
                     limiteMaximo: null,
@@ -99,7 +106,6 @@
                     this.credito = Object.assign({}, res.data)
                 ).catch(err => console.log(err))
                 this.dialog = true
-                console.log(this.credito)
             }
         }
     }

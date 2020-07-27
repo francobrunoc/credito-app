@@ -136,8 +136,8 @@
                     Object.assign(this.clientes[this.editedIndex], this.editedItem)
                 } else {
                     this.clientes.push(this.editedItem)
-                    this._submit()
                 }
+                this._submit()
                 this.close()
             },
             _list: function () {
@@ -167,6 +167,7 @@
                 dialog: false,
                 editedIndex: -1,
                 editedItem: {
+                    id: '',
                     nome: '',
                     cpf: '',
                     idade: '',
@@ -178,6 +179,7 @@
 
                 },
                 defaultItem: {
+                    id: '',
                     nome: '',
                     cpf: '',
                     idade: '',
@@ -240,7 +242,7 @@
                     renda: null
                 },
                 clientes: [],
-                selectEstadoCivil: ['SOLTEIRO', 'CASADO', 'DIVORCIADO', 'VIUVO'],
+                selectEstadoCivil: ['SOLTEIRO', 'CASADO', 'DIVORCIADO', 'VIUVA'],
                 selectEstados: [
                     'AC',
                     'AL',
