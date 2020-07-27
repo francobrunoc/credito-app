@@ -6,6 +6,7 @@
                 :items="clientes"
                 item-key="name"
                 class="elevation-1"
+                dense
         >
             <template v-slot:top>
                 <v-toolbar>
@@ -36,38 +37,40 @@
                             <v-card-text>
                                 <v-container>
                                     <v-form ref="form" v-model="valid">
+                                        <v-text-field v-model="editedItem.nome" label="Nome*"
+                                                      required :rules="clienteRules"></v-text-field>
+                                        <v-text-field v-mask="'###.###.###-##'" v-model="editedItem.cpf" label="CPF*"
+                                                      required :rules="clienteRules"></v-text-field>
+                                        <v-text-field v-model="editedItem.idade" label="Idade*"
+                                                      required :rules="clienteRules"></v-text-field>
+                                        <v-radio-group v-model="editedItem.sexo" :mandatory="true" required>
+                                            <v-radio label="Masculino" value="M"></v-radio>
+                                            <v-radio label="Feminino" value="F"></v-radio>
+                                        </v-radio-group>
                                         <v-row>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.nome" label="Nome"
-                                                              required :rules="nameRules"></v-text-field>
+                                            <v-col>
+                                                <v-select :items="selectEstadoCivil" v-model="editedItem.estadoCivil"
+                                                          label="Estado Civil*"
+                                                          :rules="clienteRules"
+                                                          required
+                                                ></v-select>
                                             </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.cpf" label="CPF"
-                                                              required :rules="nameRules"></v-text-field>
+                                            <v-col>
+                                                <v-select :items="selectEstados" v-model="editedItem.estado"
+                                                          label="Estado*"
+                                                          :rules="clienteRules"
+                                                          required
+                                                ></v-select>
                                             </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.idade" label="Idade"
-                                                              required :rules="nameRules"></v-text-field>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <v-text-field v-model="editedItem.dependentes" label="Dependentes*"
+                                                              required :rules="clienteRules"></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.sexo" label="Sexo"
-                                                              required :rules="nameRules"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.estadoCivil" label="Estado Civil"
-                                                              required :rules="nameRules"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.estado" label="Estado"
-                                                              required :rules="nameRules"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.dependentes" label="Dependentes"
-                                                              required :rules="nameRules"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.renda" label="Renda"
-                                                              required :rules="nameRules"></v-text-field>
+                                            <v-col>
+                                                <v-text-field v-model="editedItem.renda" label="Renda*"
+                                                              required :rules="clienteRules"></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-form>
@@ -107,10 +110,11 @@
 
 <script>
     import axios from 'axios'
+    import {mask} from 'vue-the-mask'
 
     export default {
         name: 'Cliente',
-
+        directives: {mask},
         methods: {
             editItem(item) {
                 this.editedIndex = this.clientes.indexOf(item)
@@ -137,9 +141,9 @@
                 this.close()
             },
             _list: function () {
-                // eslint-disable-next-line no-return-assign
-                axios.get(this.BASE_URL_CLIENTE + 'list').then(res =>
-                    this.clientes = res.data
+                axios.get(this.BASE_URL_CLIENTE + 'list').then(res => {
+                        return this.clientes = res.data;
+                    }
                 ).catch(err => console.log(err))
             },
             _submit: function () {
@@ -156,19 +160,32 @@
         },
         data() {
             return {
-                nameRules: [
-                    v => !!v || 'Name is required'
+                clienteRules: [
+                    v => !!v || 'Campo Obrigatório'
                 ],
                 valid: true,
                 dialog: false,
                 editedIndex: -1,
                 editedItem: {
-                    companyName: '',
-                    fantasyName: ''
+                    nome: '',
+                    cpf: '',
+                    idade: '',
+                    sexo: '',
+                    estadoCivil: '',
+                    estado: '',
+                    dependentes: '',
+                    renda: ''
+
                 },
                 defaultItem: {
-                    companyName: '',
-                    fantasyName: ''
+                    nome: '',
+                    cpf: '',
+                    idade: '',
+                    sexo: '',
+                    estadoCivil: '',
+                    estado: '',
+                    dependentes: '',
+                    renda: ''
                 },
                 singleSelect: false,
                 selected: [],
@@ -213,6 +230,7 @@
                 ],
                 cliente: {
                     id: null,
+                    nome: null,
                     cpf: null,
                     idade: null,
                     sexo: null,
@@ -222,7 +240,37 @@
                     renda: null
                 },
                 clientes: [],
-                BASE_URL_CLIENTE: 'http://localhost:8080/cliente/'
+                selectEstadoCivil: ['SOLTEIRO', 'CASADO', 'DIVORCIADO', 'VIUVO'],
+                selectEstados: [
+                    'AC',
+                    'AL',
+                    'AP',
+                    'AM',
+                    'BA',
+                    'CE',
+                    'DF',
+                    'ES',
+                    'GO',
+                    'MA',
+                    'MS',
+                    'MT',
+                    'MG',
+                    'PA',
+                    'PB',
+                    'PR',
+                    'PE',
+                    'PI',
+                    'RJ',
+                    'RN',
+                    'RS',
+                    'RO',
+                    'RR',
+                    'SC',
+                    'SP',
+                    'SE',
+                    'TO'
+                ],
+                BASE_URL_CLIENTE: 'http://localhost:8081/cliente/'
             }
         },
         computed: {

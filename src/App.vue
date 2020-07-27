@@ -5,7 +5,7 @@
             clipped-left
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title><h3>Empresa</h3></v-toolbar-title>
+      <v-toolbar-title><h3><a href="/">CALCARD</a></h3></v-toolbar-title>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -16,21 +16,21 @@
       <v-list class="mt-5">
         <v-list-item link>
           <v-list-item-action>
-            <v-icon>mdi-wallet</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <router-link to="/cliente">
-              <v-list-item-title><h3>Clientes</h3></v-list-item-title>
+              <v-list-item-title><h3>Cliente</h3></v-list-item-title>
             </router-link>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link>
           <v-list-item-action>
-            <v-icon>mdi-account</v-icon>
+            <v-icon>mdi-wallet</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <router-link to="/funcionario">
-              <v-list-item-title><h3>Funcionário</h3></v-list-item-title>
+            <router-link to="/analise">
+              <v-list-item-title><h3>Crédito</h3></v-list-item-title>
             </router-link>
           </v-list-item-content>
         </v-list-item>
@@ -38,7 +38,19 @@
     </v-navigation-drawer>
 
     <v-main>
-      <Cliente/>
+      <v-container
+              class="fill-height"
+              fluid
+      >
+        <v-row
+                align="center"
+                justify="center"
+        >
+          <v-col>
+            <router-view/>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
 
     <v-footer app>
@@ -49,21 +61,22 @@
 </template>
 
 <script>
-import Cliente from "@/components/Cliente";
-
 export default {
   name: 'App',
-
-  components: {
-    Cliente,
+  props: {
+    source: String
   },
-
   data: () => ({
-    //
+    drawer: null
   }),
-
   created () {
     this.$vuetify.theme.dark = true
   },
 };
 </script>
+<style>
+  a {
+    color: white !important;
+    text-decoration: none; /* no underline */
+  }
+</style>
