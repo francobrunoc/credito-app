@@ -38,11 +38,11 @@
                                 <v-container>
                                     <v-form ref="form" v-model="valid">
                                         <v-text-field v-model="editedItem.nome" label="Nome*"
-                                                      required :rules="clienteRules"></v-text-field>
+                                                      required :rules="rules.required"></v-text-field>
                                         <v-text-field v-mask="'###.###.###-##'" v-model="editedItem.cpf" label="CPF*"
-                                                      required :rules="clienteRules"></v-text-field>
+                                                      required :rules="rules.required"></v-text-field>
                                         <v-text-field v-model="editedItem.idade" label="Idade*"
-                                                      required :rules="clienteRules"></v-text-field>
+                                                      required :rules="rules.required"></v-text-field>
                                         <v-radio-group v-model="editedItem.sexo" :mandatory="true" required>
                                             <v-radio label="Masculino" value="M"></v-radio>
                                             <v-radio label="Feminino" value="F"></v-radio>
@@ -51,14 +51,14 @@
                                             <v-col>
                                                 <v-select :items="selectEstadoCivil" v-model="editedItem.estadoCivil"
                                                           label="Estado Civil*"
-                                                          :rules="clienteRules"
+                                                          :rules="rules.required"
                                                           required
                                                 ></v-select>
                                             </v-col>
                                             <v-col>
                                                 <v-select :items="selectEstados" v-model="editedItem.estado"
                                                           label="Estado*"
-                                                          :rules="clienteRules"
+                                                          :rules="rules.required"
                                                           required
                                                 ></v-select>
                                             </v-col>
@@ -66,11 +66,11 @@
                                         <v-row>
                                             <v-col>
                                                 <v-text-field v-model="editedItem.dependentes" label="Dependentes*"
-                                                              required :rules="clienteRules"></v-text-field>
+                                                              required :rules="rules.required"></v-text-field>
                                             </v-col>
                                             <v-col>
                                                 <v-text-field v-model="editedItem.renda" label="Renda*"
-                                                              required :rules="clienteRules"></v-text-field>
+                                                              required :rules="rules.required"></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-form>
@@ -160,9 +160,9 @@
         },
         data() {
             return {
-                clienteRules: [
-                    v => !!v || 'Campo Obrigatório',
-                ],
+                rules: {
+                    required: value => !!value || 'Campo Obrigatório',
+                },
                 valid: true,
                 dialog: false,
                 editedIndex: -1,
