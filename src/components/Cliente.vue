@@ -161,7 +161,7 @@
         data() {
             return {
                 clienteRules: [
-                    v => !!v || 'Campo Obrigatório'
+                    v => !!v || 'Campo Obrigatório',
                 ],
                 valid: true,
                 dialog: false,

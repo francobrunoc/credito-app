@@ -4,7 +4,7 @@
             <v-list-item>
                 <v-list-item-content>
                     <div align="center">
-                        <v-form v-model="valid">
+                        <v-form v-model="valid" @submit.prevent="">
                             <v-text-field v-model="cliente.cpf" v-mask="'###.###.###-##'" label="CPF" required
                                           :rules="creditoRules"></v-text-field>
                         </v-form>
@@ -26,7 +26,7 @@
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="headline">{{ 'Proposta de Crédito ' }}</span>
+                    <span class="headline">{{ 'Proposta de Crédito' }}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -97,11 +97,21 @@
                     limiteMaximo: null,
                     motivo: null
                 },
+                defaultItem: {
+                  cliente: {
+                      nome: null,
+                  },
+                    aprovado: null,
+                    limiteMinimo: null,
+                    limiteMaximo: null,
+                    motivo: null
+                },
                 BASE_URL_CREDITO: 'http://localhost:8081/credito/'
             }
         },
         methods: {
             _submit: function () {
+                this.credito = Object.assign({}, this.defaultItem)
                 axios.post(this.BASE_URL_CREDITO + 'consult', this.cliente).then(res =>
                     this.credito = Object.assign({}, res.data)
                 ).catch(err => console.log(err))
